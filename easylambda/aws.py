@@ -1,4 +1,3 @@
-from functools import lru_cache
 from typing import Any
 from urllib.parse import parse_qs
 
@@ -71,16 +70,18 @@ class Event(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    @lru_cache(maxsize=1)
+    _parse_qs_cache = None
+    _parse_qs_cache_valid = False
+
     def parse_qs(self) -> dict[str, list[str]]:
-        return parse_qs(self.rawQueryString)
+        if self._parse_qs_cache_valid is False:
+            self._parse_qs_cache = parse_qs(self.rawQueryString)
+            self._parse_qs_cache_valid = True
+        return self._parse_qs_cache
 
     @property
     def content_type(self) -> str | None:
         return self.headers.get("content-type", None)
-
-    def __hash__(self) -> int:
-        return id(self)
 
 
 class Response(BaseModel):
