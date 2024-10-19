@@ -7,11 +7,12 @@ from inspect import Signature, signature
 from typing import Annotated, Any, Callable, TypeVar, get_args, get_origin
 
 from easylambda.aws import Event
+from easylambda.dependency import Dependency
 
 T = TypeVar("T")
 
 
-class Depends:
+class Depends(Dependency):
     """Dependency injection class."""
 
     def __init__(self, func: Callable[..., T]) -> None:
@@ -47,9 +48,13 @@ class Depends:
 
             # if is annotated
             for m in get_args(v):
-                if isinstance(m, Depends):
-                    # argument is annotated with Depends
+                if isinstance(m, Dependency):
+                    # argument is a dependency
                     func_kwargs[k] = m
+                    break
+                elif issubclass(m, Dependency):
+                    # argument is a Dependency, but not instantiated
+                    func_kwargs[k] = m()
                     break
             else:
                 # argument is annotated but not with Depends

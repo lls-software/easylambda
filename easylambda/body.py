@@ -2,25 +2,23 @@ import json
 from typing import Any
 
 from easylambda.aws import Event
-from easylambda.paramtype import ParamType
+from easylambda.dependency import Dependency
+
+_Undefined = object()
 
 
-class Body(ParamType):
-    @staticmethod
-    def get(event: Event, name: str) -> Any:
-        content_type = event.content_type
-        if content_type is None:
-            return None
-        if content_type.startswith("text/"):
-            return event.body
-        if content_type == "application/json":
-            return json.loads(event.body)
-        return None
+class Body(Dependency):
+    _cache = _Undefined
+    _cache_request_id = _Undefined
 
-    @staticmethod
-    def getlist(event: Event, name: str) -> list[Any] | None:
-        if event.content_type == "application/json":
-            ans = json.loads(event.body)
-            if isinstance(ans, list):
-                return ans
-        return None
+    def __call__(self, event: Event) -> Any:
+        request_id = event.requestContext.requestId
+        if self._cache_request_id != request_id:
+            match event.content_type:
+                case "application/json":
+                    self._cache_request_id = request_id
+                    self._cache = json.loads(event.body)
+                case _:
+                    self._cache_request_id = request_id
+                    self._cache = event.body
+        return self._cache
