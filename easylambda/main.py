@@ -5,12 +5,13 @@ import re
 from inspect import _empty, signature
 from typing import Any, Callable, Literal, Match, Pattern
 
-from pydantic import ValidationError, validate_call
+from pydantic import BaseModel, ValidationError, validate_call
 
 from easylambda.aws import Event, Response
 from easylambda.depends import Depends
 from easylambda.errors import (
     HttpError,
+    HttpInternalServerError,
     HttpMethodNotAllowed,
     HttpNotFound,
     HttpUnprocessableEntity,
@@ -65,11 +66,23 @@ class Application:
         except ValidationError as e:
             raise HttpUnprocessableEntity(str(e))
 
+        # Check the handler response
+        if isinstance(handler_response, Response):
+            return handler_response
+        elif isinstance(handler_response, BaseModel):
+            status, body = 200, handler_response.model_dump_json()
+        elif isinstance(handler_response, dict):
+            status, body = 200, json.dumps(handler_response)
+        elif handler_response is None:
+            status, body = 204, None
+        else:
+            raise HttpInternalServerError(message="Invalid handler response.")
+
         # Return the response
         return Response(
-            statusCode=200,
+            statusCode=status,
             headers={"Content-Type": "application/json"},
-            body=json.dumps(handler_response),
+            body=body,
         )
 
 
