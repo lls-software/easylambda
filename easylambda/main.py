@@ -135,7 +135,7 @@ class Application:
         try:
             handler_response = self.handler(**kwargs)
         except ValidationError as e:
-            raise UnprocessableEntity(str(e))
+            raise HttpUnprocessableEntity(str(e))
 
         # Return the response
         return Response(
