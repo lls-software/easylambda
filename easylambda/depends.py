@@ -1,4 +1,4 @@
-from inspect import Signature, signature
+from inspect import Signature, isclass, signature
 from typing import Annotated, Any, Callable, Match, TypeVar, get_args, get_origin
 
 from easylambda.aws import Event
@@ -47,7 +47,7 @@ class Depends(Dependency):
                     # argument is a dependency
                     func_kwargs[k] = m
                     break
-                elif issubclass(m, Dependency):
+                elif isclass(m) and issubclass(m, Dependency):
                     # argument is a Dependency, but not instantiated
                     func_kwargs[k] = m()
                     break
