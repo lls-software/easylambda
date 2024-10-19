@@ -1,11 +1,14 @@
-from re import Match
-from typing import Any
+from typing import Any, Match
+
+from easylambda.dependency import Dependency
 
 
-class Path:
-    @staticmethod
-    def get(match: Match, name: str) -> Any:
+class Path(Dependency):
+    def __init__(self, name: str) -> None:
+        self.name = name
+
+    def __call__(self, event: Any, route: Match) -> Any:
         try:
-            return match.group(name)
+            return route.group(self.name)
         except IndexError:
-            raise KeyError(name) from None
+            raise KeyError(self.name) from None

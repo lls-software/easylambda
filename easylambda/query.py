@@ -1,3 +1,5 @@
+from typing import Match
+
 from easylambda.aws import Event
 from easylambda.dependency import Dependency
 
@@ -7,7 +9,7 @@ class Query(Dependency):
         self.name = name
         self.is_list = is_list
 
-    def __call__(self, event: Event) -> str | list[str]:
+    def __call__(self, event: Event, route: Match) -> str | list[str]:
         try:
             parsed_qs = event.parse_qs()[self.name]
         except KeyError:

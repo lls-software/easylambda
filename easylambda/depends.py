@@ -4,7 +4,7 @@
 #  No part of this file may be copied, modified, sold, distributed, or used
 #  in any way without the written permission of Leandro Lima.
 from inspect import Signature, signature
-from typing import Annotated, Any, Callable, TypeVar, get_args, get_origin
+from typing import Annotated, Any, Callable, Match, TypeVar, get_args, get_origin
 
 from easylambda.aws import Event
 from easylambda.dependency import Dependency
@@ -21,14 +21,14 @@ class Depends(Dependency):
         :param func: The function to inject the dependencies.
         """
         self.func = func
-        func_kwargs: dict[str, Callable[[Event], Any]] = {}
+        func_kwargs: dict[str, Callable[[Event, Match], Any]] = {}
         self.func_kwargs = func_kwargs
         for k, p in signature(func).parameters.items():
             v = p.annotation
 
             if v is Event:
                 # expected type is Event
-                func_kwargs[k] = lambda event: event
+                func_kwargs[k] = lambda event, match: event
                 continue
 
             has_default = p.default is not Signature.empty
@@ -43,7 +43,7 @@ class Depends(Dependency):
                     )
 
                 # argument is not annotated but has a default value
-                func_kwargs[k] = lambda event: p.default
+                func_kwargs[k] = lambda event, match: p.default
                 continue
 
             # if is annotated
@@ -63,10 +63,11 @@ class Depends(Dependency):
                     f"Depends to use it as a dependency."
                 )
 
-    def __call__(self, event: Event) -> T:
+    def __call__(self, event: Event, match: Match) -> T:
         """Call the function with the dependencies.
 
         :param event: The event to inject into the dependencies.
+        :param match: The route match to inject into the dependencies.
         :returns: The result of the function.
         """
-        return self.func(**{k: v(event) for k, v in self.func_kwargs.items()})
+        return self.func(**{k: v(event, match) for k, v in self.func_kwargs.items()})

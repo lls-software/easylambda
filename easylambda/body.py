@@ -1,5 +1,5 @@
 import json
-from typing import Any
+from typing import Any, Match
 
 from easylambda.aws import Event
 from easylambda.dependency import Dependency
@@ -11,7 +11,7 @@ class Body(Dependency):
     _cache = _Undefined
     _cache_request_id = _Undefined
 
-    def __call__(self, event: Event) -> Any:
+    def __call__(self, event: Event, route: Match) -> Any:
         request_id = event.requestContext.requestId
         if self._cache_request_id != request_id:
             match event.content_type:
