@@ -1,18 +1,24 @@
 from easylambda.aws import Event
-from easylambda.paramtype import ParamType
+from easylambda.dependency import Dependency
 
 
-class Query(ParamType):
-    @staticmethod
-    def get(event: Event, name: str) -> str:
+class Query(Dependency):
+    def __init__(self, name: str, is_list: bool = False) -> None:
+        self.name = name
+        self.is_list = is_list
+
+    def __call__(self, event: Event) -> str | list[str]:
         try:
-            return event.parse_qs()[name][-1]
-        except (KeyError, IndexError):
-            raise KeyError(name) from None
-
-    @staticmethod
-    def getlist(event: Event, name: str) -> list[str]:
-        try:
-            return event.parse_qs()[name]
+            parsed_qs = event.parse_qs()[self.name]
         except KeyError:
-            return []
+            if self.is_list:
+                return []
+            raise KeyError(self.name) from None
+
+        if self.is_list:
+            return parsed_qs
+
+        try:
+            return parsed_qs[-1]
+        except IndexError:
+            raise KeyError(self.name) from None
