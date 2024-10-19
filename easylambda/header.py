@@ -1,17 +1,15 @@
-from typing import Any
+from typing import Match
 
 from easylambda.aws import Event
-from easylambda.paramtype import ParamType
+from easylambda.dependency import Dependency
 
 
-class Header(ParamType):
-    @staticmethod
-    def get(event: Event, name: str) -> Any:
+class Header(Dependency):
+    def __init__(self, name: str) -> None:
+        self.name = name
+
+    def __call__(self, event: Event, route: Match) -> str | list[str]:
         try:
-            return event.headers[name.lower()]
+            return event.headers[self.name.lower()]
         except KeyError:
-            raise KeyError(name) from None
-
-    @staticmethod
-    def getlist(event: Event, name: str) -> list[Any] | None:
-        raise NotImplementedError
+            raise KeyError(self.name) from None
