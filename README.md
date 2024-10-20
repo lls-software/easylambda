@@ -77,7 +77,7 @@ items = [
 ]
 
 
-@get("/items/")
+@get("/items")
 def lambda_handler(
     skip: Annotated[int, Query("skip")] = 0,
     limit: Annotated[int, Query("limit")] = 10,
