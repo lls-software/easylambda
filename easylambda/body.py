@@ -17,7 +17,10 @@ class Body(Dependency):
             match event.content_type:
                 case "application/json":
                     self._cache_request_id = request_id
-                    self._cache = json.loads(event.body)
+                    try:
+                        self._cache = json.loads(event.body)
+                    except json.JSONDecodeError:
+                        self._cache = None
                 case _:
                     self._cache_request_id = request_id
                     self._cache = event.body
