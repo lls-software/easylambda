@@ -7,7 +7,7 @@ A lightweight, FastAPI-inspired framework for building AWS Lambda functions with
 The library is available as an AWS Lambda Layer:
 
 ```
-arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_0-python-3_12-arm64
+arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_1-python-3_12-arm64
 ```
 
 Requirements:
