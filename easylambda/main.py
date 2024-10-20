@@ -71,12 +71,13 @@ class Application:
             return handler_response
         elif isinstance(handler_response, BaseModel):
             status, body = 200, handler_response.model_dump_json()
-        elif isinstance(handler_response, dict):
-            status, body = 200, json.dumps(handler_response)
         elif handler_response is None:
             status, body = 204, None
         else:
-            raise HttpInternalServerError(message="Invalid handler response.")
+            try:
+                status, body = 200, json.dumps(handler_response)
+            except TypeError:
+                raise HttpInternalServerError(message="Invalid handler response.")
 
         # Return the response
         return Response(
