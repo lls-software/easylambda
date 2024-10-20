@@ -4,15 +4,35 @@ A lightweight, FastAPI-inspired framework for building AWS Lambda functions with
 
 ## Installation
 
-The library is available as an AWS Lambda Layer:
+The library is available as AWS Lambda Layers:
+
+For Python 3.11 on arm64 architecture:
 
 ```
-arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_1-python-3_12-arm64
+arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_1-python3_11-arm64
+```
+
+For Python 3.11 on x86_64 architecture:
+
+```
+arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_1-python3_11-x86_64
+```
+
+For Python 3.12 on arm64 architecture:
+
+```
+arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_1-python3_12-arm64
+```
+
+For Python 3.12 on x86_64 architecture:
+
+```
+arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_1-python3_12-x86_64
 ```
 
 Requirements:
-- Python 3.12
-- AWS Lambda arm64 architecture
+- Python 3.11 or 3.12
+- AWS Lambda arm64 or x86_64 architecture
 - Region: us-east-2
 
 ## Quick Start
@@ -166,7 +186,7 @@ def lambda_handler() -> Response:
 ## Limitations
 
 - Currently only available in us-east-2 region
-- Requires Python 3.12 and arm64 architecture
+- Requires Python 3.11 or 3.12
 - Must be used as a Lambda Layer
 
 ## Contributing
