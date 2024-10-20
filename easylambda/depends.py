@@ -45,11 +45,17 @@ class Depends(Dependency):
             for m in get_args(v):
                 if isinstance(m, Dependency):
                     # argument is a dependency
-                    func_kwargs[k] = m
+                    if has_default:
+                        func_kwargs[k] = try_except(m, KeyError, p.default)
+                    else:
+                        func_kwargs[k] = m
                     break
                 elif isclass(m) and issubclass(m, Dependency):
                     # argument is a Dependency, but not instantiated
-                    func_kwargs[k] = m()
+                    if has_default:
+                        func_kwargs[k] = try_except(m(), KeyError, p.default)
+                    else:
+                        func_kwargs[k] = m()
                     break
             else:
                 # argument is annotated but not with Depends
@@ -66,3 +72,29 @@ class Depends(Dependency):
         :returns: The result of the function.
         """
         return self.func(**{k: v(event, match) for k, v in self.func_kwargs.items()})
+
+
+V = TypeVar("V")
+
+
+def try_except(
+    func: Callable[..., V],
+    exception: type[BaseException],
+    default: V,
+) -> Callable[..., V]:
+    """Wrap a function with a try-except block.
+
+    :param func: The function to wrap.
+    :param exception: The exception to catch.
+    :param default: The default value to return.
+    :returns: The wrapped function.
+    """
+
+    # noinspection PyBroadException
+    def func_wrapper(*args, **kwargs) -> V:
+        try:
+            return func(*args, **kwargs)
+        except exception:
+            return default
+
+    return func_wrapper
