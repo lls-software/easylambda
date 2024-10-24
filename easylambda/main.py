@@ -72,7 +72,7 @@ class Application:
         elif isinstance(handler_response, BaseModel):
             status, body = 200, handler_response.model_dump_json()
         elif handler_response is None:
-            status, body = 204, None
+            status, body = 204, ""
         else:
             try:
                 status, body = 200, json.dumps(handler_response)
