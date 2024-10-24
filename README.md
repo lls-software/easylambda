@@ -7,10 +7,10 @@ A lightweight, FastAPI-inspired framework for building AWS Lambda functions with
 The library is available as AWS Lambda Layers (choose based on your Python
 version and architecture):
 
-- `arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_1-python3_11-arm64:1`
-- `arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_1-python3_11-x86_64:1`
-- `arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_1-python3_12-arm64:1`
-- `arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_1-python3_12-x86_64:1`
+- `arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_2-python3_11-arm64:1`
+- `arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_2-python3_11-x86_64:1`
+- `arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_2-python3_12-arm64:1`
+- `arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_2-python3_12-x86_64:1`
 
 Requirements:
 - Python 3.11 or 3.12
