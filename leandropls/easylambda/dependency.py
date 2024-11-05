@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from typing import Any, Match
 
-from easylambda.aws import Event
+from leandropls.easylambda.aws import Event
 
 
 class Dependency:

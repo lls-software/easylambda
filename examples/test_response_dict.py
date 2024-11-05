@@ -1,6 +1,6 @@
 import json
 
-from easylambda import get
+from leandropls.easylambda import get
 
 
 @get("/")

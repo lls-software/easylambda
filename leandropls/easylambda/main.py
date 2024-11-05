@@ -7,9 +7,9 @@ from typing import Any, Callable, Literal, Match, Pattern
 
 from pydantic import BaseModel, ValidationError, validate_call
 
-from easylambda.aws import Event, Response
-from easylambda.depends import Depends
-from easylambda.errors import (
+from leandropls.easylambda.aws import Event, Response
+from leandropls.easylambda.depends import Depends
+from leandropls.easylambda.errors import (
     HttpError,
     HttpInternalServerError,
     HttpMethodNotAllowed,
@@ -23,17 +23,19 @@ ALL_METHODS = frozenset(("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"))
 class Application:
     """A wrapper to simplify the creation of AWS Lambda handlers."""
 
-    __slots__ = ("methods", "url_regex", "handler")
+    __slots__ = ("methods", "url_regex", "handler", "print_errors")
 
     def __init__(
         self,
         methods: set[str],
         url_regex: Pattern[str],
         handler: Callable[[Event, Match], Any],
+        print_errors: bool,
     ) -> None:
         self.methods = methods
         self.url_regex = url_regex
         self.handler = handler
+        self.print_errors = print_errors
 
     @validate_call
     def __call__(
@@ -44,9 +46,12 @@ class Application:
         """The AWS Lambda handler."""
         # noinspection PyBroadException
         try:
-            return self.generate_response(Event.model_validate(event)).model_dump()
+            response = self.generate_response(Event.model_validate(event)).model_dump()
         except HttpError as e:
-            return e.to_response().model_dump()
+            response = e.to_response().model_dump()
+            if self.print_errors:
+                print(response, flush=True)
+        return response
 
     def generate_response(self, event: Event) -> Response:
         """Generate the response for the event."""
@@ -91,9 +96,8 @@ class Application:
 def easylambda(
     route: str,
     *,
-    methods: set[
-        Literal["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"]
-    ] = ALL_METHODS,
+    methods: set[Literal["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"]] = ALL_METHODS,
+    print_errors: bool = False,
 ) -> Callable[[callable], Callable[[dict[str, Any], Any], dict[str, Any]]]:
     """Turns a EasyLambda Function into an AWS Lambda handler.
 
@@ -104,9 +108,7 @@ def easylambda(
 
     def decorator(handler: callable):
         # Create the URL map and wrap the handler
-        url_regex = re.compile(
-            r"^" + re.sub(r"{([^}]+)}", r"(?P<\1>[^/]+)", route) + r"$"
-        )
+        url_regex = re.compile(r"^" + re.sub(r"{([^}]+)}", r"(?P<\1>[^/]+)", route) + r"$")
 
         # Wrap the handler for dependency injection and validation
         handler = Depends(validate_call(validate_return=True)(handler))
@@ -115,6 +117,7 @@ def easylambda(
             methods=methods,
             url_regex=url_regex,
             handler=handler,
+            print_errors=print_errors,
         )
 
     return decorator

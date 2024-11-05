@@ -1,8 +1,8 @@
 import json
 from typing import Annotated
 
-from easylambda import get
-from easylambda.path import Path
+from leandropls.easylambda import get
+from leandropls.easylambda.path import Path
 
 
 @get("/items/{item_id}")

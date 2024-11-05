@@ -4,9 +4,9 @@ from secrets import token_hex
 from typing import Annotated
 from uuid import uuid4
 
-from easylambda import get
-from easylambda.aws import Response
-from easylambda.query import Query
+from leandropls.easylambda import get
+from leandropls.easylambda.aws import Response
+from leandropls.easylambda.query import Query
 
 
 @get("/")

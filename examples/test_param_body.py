@@ -2,9 +2,10 @@ import json
 from secrets import token_hex
 from typing import Annotated
 
-from easylambda import post
-from easylambda.body import Body
 from pydantic import BaseModel
+
+from leandropls.easylambda import post
+from leandropls.easylambda.body import Body
 
 
 class Item(BaseModel):

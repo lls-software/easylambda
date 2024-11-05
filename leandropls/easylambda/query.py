@@ -1,7 +1,7 @@
 from typing import Match
 
-from easylambda.aws import Event
-from easylambda.dependency import Dependency
+from leandropls.easylambda.aws import Event
+from leandropls.easylambda.dependency import Dependency
 
 
 class Query(Dependency):

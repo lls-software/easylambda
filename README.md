@@ -4,23 +4,29 @@ A lightweight, FastAPI-inspired framework for building AWS Lambda functions with
 
 ## Installation
 
-The library is available as AWS Lambda Layers (choose based on your Python
+You can install the library using pip:
+
+```bash
+pip install leandropls.easylambda
+```
+
+The library is also available as AWS Lambda Layers (choose based on your Python
 version and architecture):
 
-- `arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_2-python3_11-arm64:1`
-- `arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_2-python3_11-x86_64:1`
-- `arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_2-python3_12-arm64:1`
-- `arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_2-python3_12-x86_64:1`
+- `arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_3-python3_11-arm64:1`
+- `arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_3-python3_11-x86_64:1`
+- `arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_3-python3_12-arm64:1`
+- `arn:aws:lambda:us-east-2:144273415340:layer:easylambda-0_1_3-python3_12-x86_64:1`
 
 Requirements:
 - Python 3.11 or 3.12
-- AWS Lambda arm64 or x86_64 architecture
-- Region: us-east-2
+- AWS Lambda arm64 or x86_64 architecture (when using as a Lambda Layer)
+- Region: us-east-2 (when using as a Lambda Layer)
 
 ## Quick Start
 
 ```python
-from easylambda import get
+from leandropls.easylambda import get
 
 @get("/")
 def lambda_handler() -> dict:
@@ -37,8 +43,8 @@ EasyLambda supports various ways to handle request parameters:
 
 ```python
 from typing import Annotated
-from easylambda import get
-from easylambda.path import Path
+from leandropls.easylambda import get
+from leandropls.easylambda.path import Path
 
 @get("/items/{item_id}")
 def lambda_handler(item_id: Annotated[int, Path("item_id")]) -> dict:
@@ -49,8 +55,8 @@ def lambda_handler(item_id: Annotated[int, Path("item_id")]) -> dict:
 
 ```python
 from typing import Annotated
-from easylambda import get
-from easylambda.query import Query
+from leandropls.easylambda import get
+from leandropls.easylambda.query import Query
 
 items = [
     {"item_name": "Foo"},
@@ -71,8 +77,8 @@ def lambda_handler(
 
 ```python
 from typing import Annotated
-from easylambda import post
-from easylambda.body import Body
+from leandropls.easylambda import post
+from leandropls.easylambda.body import Body
 from pydantic import BaseModel
 
 class Item(BaseModel):
@@ -90,8 +96,8 @@ def lambda_handler(item: Annotated[Item, Body]) -> dict:
 
 ```python
 from typing import Annotated
-from easylambda import get
-from easylambda.header import Header
+from leandropls.easylambda import get
+from leandropls.easylambda.header import Header
 
 @get("/items")
 def lambda_handler(
@@ -109,7 +115,7 @@ EasyLambda provides flexible response handling options:
 The simplest way to return a response:
 
 ```python
-from easylambda import get
+from leandropls.easylambda import get
 
 @get("/")
 def lambda_handler() -> dict:
@@ -121,7 +127,7 @@ def lambda_handler() -> dict:
 For type-safe responses:
 
 ```python
-from easylambda import get
+from leandropls.easylambda import get
 from pydantic import BaseModel
 
 class HandlerResponse(BaseModel):
@@ -137,8 +143,8 @@ def lambda_handler() -> HandlerResponse:
 For full control over the response:
 
 ```python
-from easylambda import get
-from easylambda.aws import Response
+from leandropls.easylambda import get
+from leandropls.easylambda.aws import Response
 
 @get("/")
 def lambda_handler() -> Response:
@@ -167,9 +173,10 @@ def lambda_handler() -> Response:
 
 ## Limitations
 
-- Currently only available in us-east-2 region
-- Requires Python 3.11 or 3.12
-- Must be used as a Lambda Layer
+- When using as a Lambda Layer:
+  - Only available in us-east-2 region
+  - Requires Python 3.11 or 3.12
+  - Must be used as a Lambda Layer
 
 ## Contributing
 

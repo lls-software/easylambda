@@ -6,12 +6,12 @@ from uuid import uuid4
 
 from pydantic import BaseModel, Field
 
-from easylambda import post
-from easylambda.aws import Event
-from easylambda.body import Body
-from easylambda.dependency import Dependency
-from easylambda.errors import HttpUnauthorized
-from easylambda.header import Header
+from leandropls.easylambda import post
+from leandropls.easylambda.aws import Event
+from leandropls.easylambda.body import Body
+from leandropls.easylambda.dependency import Dependency
+from leandropls.easylambda.errors import HttpUnauthorized
+from leandropls.easylambda.header import Header
 
 APP_SECRET = token_hex(16)
 

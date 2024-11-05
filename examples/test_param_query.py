@@ -1,8 +1,8 @@
 import json
 from typing import Annotated
 
-from easylambda import get
-from easylambda.query import Query
+from leandropls.easylambda import get
+from leandropls.easylambda.query import Query
 
 fake_items_db = [
     {"item_name": "Foo"},
