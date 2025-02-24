@@ -1,8 +1,8 @@
 import json
 from typing import Any, Match
 
-from leandropls.easylambda.aws import Event
-from leandropls.easylambda.dependency import Dependency
+from easylambda.aws import Event
+from easylambda.dependency import Dependency
 
 _Undefined = object()
 

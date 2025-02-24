@@ -1,6 +1,6 @@
 import json
 
-from leandropls.easylambda.method_router import MethodRouter
+from easylambda.method_router import MethodRouter
 
 lambda_handler = MethodRouter("/")
 

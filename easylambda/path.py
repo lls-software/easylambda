@@ -1,6 +1,6 @@
 from typing import Any, Match
 
-from leandropls.easylambda.dependency import Dependency
+from easylambda.dependency import Dependency
 
 
 class Path(Dependency):

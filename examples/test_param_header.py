@@ -1,8 +1,8 @@
 import json
 from typing import Annotated
 
-from leandropls.easylambda import get
-from leandropls.easylambda.header import Header
+from easylambda import get
+from easylambda.header import Header
 
 
 @get("/items")

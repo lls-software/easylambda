@@ -1,8 +1,8 @@
 from inspect import Signature, isclass, signature
 from typing import Annotated, Any, Callable, Match, TypeVar, get_args, get_origin
 
-from leandropls.easylambda.aws import Event
-from leandropls.easylambda.dependency import Dependency
+from easylambda.aws import Event
+from easylambda.dependency import Dependency
 
 T = TypeVar("T")
 

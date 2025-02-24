@@ -1,5 +1,5 @@
-from leandropls.easylambda import get
-from leandropls.easylambda.aws import Response
+from easylambda import get
+from easylambda.aws import Response
 
 
 @get("/")

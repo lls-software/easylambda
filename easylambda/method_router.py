@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Callable, Literal, TypeVar
 
-from leandropls.easylambda import easylambda
+from easylambda import easylambda
 
 T = TypeVar("T", bound=Callable[..., Any])
 

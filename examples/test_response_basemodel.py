@@ -2,7 +2,7 @@ import json
 
 from pydantic import BaseModel
 
-from leandropls.easylambda import get
+from easylambda import get
 
 
 class HandlerResponse(BaseModel):

@@ -7,9 +7,9 @@ from typing import Any, Callable, Literal, Match, Pattern
 
 from pydantic import BaseModel, ValidationError, validate_call
 
-from leandropls.easylambda.aws import Event, Response
-from leandropls.easylambda.depends import Depends
-from leandropls.easylambda.errors import (
+from easylambda.aws import Event, Response
+from easylambda.depends import Depends
+from easylambda.errors import (
     HttpError,
     HttpInternalServerError,
     HttpMethodNotAllowed,

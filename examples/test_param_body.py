@@ -4,8 +4,8 @@ from typing import Annotated
 
 from pydantic import BaseModel
 
-from leandropls.easylambda import post
-from leandropls.easylambda.body import Body
+from easylambda import post
+from easylambda.body import Body
 
 
 class Item(BaseModel):

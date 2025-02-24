@@ -1,4 +1,4 @@
-from leandropls.easylambda import get
+from easylambda import get
 
 
 @get("/")

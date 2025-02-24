@@ -1,6 +1,6 @@
 import json
 
-from leandropls.easylambda.aws import Response
+from easylambda.aws import Response
 
 
 class HttpError(Exception):

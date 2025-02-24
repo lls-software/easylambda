@@ -1,7 +1,7 @@
 from typing import Match
 
-from leandropls.easylambda.aws import Event
-from leandropls.easylambda.dependency import Dependency
+from easylambda.aws import Event
+from easylambda.dependency import Dependency
 
 
 class Header(Dependency):
