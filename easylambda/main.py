@@ -44,6 +44,9 @@ class Application:
         context: Any,
     ) -> dict[str, Any]:
         """The AWS Lambda handler."""
+        if not event:
+            return {}
+
         # noinspection PyBroadException
         try:
             response = self.generate_response(Event.model_validate(event)).model_dump()
